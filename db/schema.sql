@@ -15,12 +15,12 @@ CREATE TABLE `categories` (
 --
 
 DROP TABLE IF EXISTS `cms`;
-CREATE TABLE `cc`.`cms` (
-  `key` varchar(255)  NOT NULL,
-  `description` varchar(255)  NOT NULL,
-  `value` text  NOT NULL,
-  PRIMARY KEY (`key`)
-) ENGINE = MyISAM CHARACTER SET utf8;
+CREATE TABLE `cms` (
+  `key` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY  (`key`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `companies`
@@ -36,7 +36,7 @@ CREATE TABLE `companies` (
   PRIMARY KEY  (`company_id`),
   KEY `name` (`name`),
   KEY `slug` (`slug`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `company_terms`
@@ -55,7 +55,7 @@ CREATE TABLE `company_terms` (
 --
 
 DROP TABLE IF EXISTS `posts`;
-CREATE TABLE  `cc`.`posts` (
+CREATE TABLE `posts` (
   `post_id` int(10) unsigned NOT NULL auto_increment,
   `company_id` int(10) unsigned NOT NULL,
   `user_id` int(10) unsigned default NULL,
@@ -64,10 +64,12 @@ CREATE TABLE  `cc`.`posts` (
   `parent_post_id` int(10) unsigned default NULL,
   `root_post_id` int(10) unsigned default NULL,
   `created` datetime NOT NULL,
-  `last_reply` datetime NOT NULL,
-  `ip` varchar(24) NOT NULL,
+  `last_reply` datetime default NULL,
+  `ip` varchar(64) NOT NULL,
   `votes` int(11) NOT NULL default '0',
   `reports` int(10) unsigned NOT NULL default '0',
+  `comments` int(10) unsigned NOT NULL default '0',
+  `hidden` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`post_id`),
   KEY `company_id` (`company_id`),
   KEY `user_id` (`user_id`),
@@ -75,8 +77,21 @@ CREATE TABLE  `cc`.`posts` (
   KEY `parent_post_id` (`parent_post_id`),
   KEY `created` (`created`),
   KEY `last_reply` (`last_reply`),
-  KEY `root_post_id` (`root_post_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+  KEY `root_post_id` (`root_post_id`),
+  KEY `votes` (`votes`),
+  KEY `comments` (`comments`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+
+--
+-- Table structure for table `reports`
+--
+
+DROP TABLE IF EXISTS `reports`;
+CREATE TABLE `reports` (
+  `post_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned default NULL,
+  `ip` varchar(64) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `users`
@@ -88,11 +103,13 @@ CREATE TABLE `users` (
   `email` varchar(128) character set latin1 NOT NULL,
   `password` varchar(128) character set latin1 NOT NULL,
   `company_id` int(10) unsigned NOT NULL,
+  `salt` varchar(24) NOT NULL,
+  `active` tinyint(1) unsigned NOT NULL default '1',
   `created` datetime NOT NULL,
-  `updated` datetime NOT NULL,
+  `last_login` datetime default NULL,
   PRIMARY KEY  (`user_id`),
   KEY `email` (`email`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `votes`
@@ -101,7 +118,7 @@ CREATE TABLE `users` (
 DROP TABLE IF EXISTS `votes`;
 CREATE TABLE `votes` (
   `post_id` int(10) unsigned NOT NULL,
-  `user_id` int(10) unsigned NOT NULL,
-  `ip` varchar(24) NOT NULL,
+  `user_id` int(10) unsigned default NULL,
+  `ip` varchar(64) NOT NULL,
   `up` tinyint(1) NOT NULL default '1'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
