@@ -1,0 +1,2 @@
+2H php {code-root}/cli/CliBootstrap.php --config={config} --url=/cli/pull/listings/1/500
+2M php {code-root}/cli/CliBootstrap.php --config={config} --url=/cli/setup/newCategoryImages

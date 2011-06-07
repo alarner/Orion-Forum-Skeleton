@@ -1,0 +1,29 @@
+################################################################################
+# About
+################################################################################
+The CronJobberPhp allows you to configure multiple command line statements to
+run at specific times/intervals with only one real server cron job. The goal
+here is to make your server setup a one time task and allow any changes to
+what jobs are being run to be wrapped up in your application and version 
+control.
+
+
+################################################################################
+# Server Setup
+################################################################################
+To setup your server to begin running your configured jobs you will need
+to edit the crontab file on your server to run the run.php script using
+the PHP CLI. The best increment to run this file at would be at an
+interval less then or equal to your most frequent job.
+
+When calling the run.php script you may provide any number of arguments like so:
+	php run.php code-root=~/code key=val
+
+Then when you configure your jobs file you can use bracket notation:
+	ls {code-root}/demo
+
+################################################################################
+# Job Setup
+################################################################################
+Configure (and view examples of) cron jobs in the jobs file included in
+this directory.
